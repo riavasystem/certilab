@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { Play, Trophy, Clipboard } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/lib/actions";
 
-export default async function Dashboard() {
+async function DashboardContent() {
   const stats = await getDashboardStats();
   const percentage = stats.totalQuestions > 0
     ? Math.round((Number(stats.answeredQuestions) / Number(stats.totalQuestions)) * 100)
@@ -92,5 +93,13 @@ export default async function Dashboard() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div>Cargando dashboard...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }

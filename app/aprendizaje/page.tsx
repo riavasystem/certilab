@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap } from "lucide-react";
 import { getDomains } from "@/lib/actions";
 
-export default async function Aprendizaje() {
+async function AprendizajeContent() {
   const dominios = await getDomains();
 
   return (
@@ -40,5 +41,13 @@ export default async function Aprendizaje() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Aprendizaje() {
+  return (
+    <Suspense fallback={<div>Cargando dominios...</div>}>
+      <AprendizajeContent />
+    </Suspense>
   );
 }

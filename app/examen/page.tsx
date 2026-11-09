@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ClipboardCheck, Target, Timer } from "lucide-react";
 import { getExamAttempts } from "@/lib/actions";
 
-export default async function Examen() {
+async function ExamenContent() {
   const attempts = await getExamAttempts();
 
   return (
@@ -85,5 +86,13 @@ export default async function Examen() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function Examen() {
+  return (
+    <Suspense fallback={<div>Cargando intentos...</div>}>
+      <ExamenContent />
+    </Suspense>
   );
 }
