@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { GraduationCap } from "lucide-react";
 import { getDomains } from "@/lib/actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Aprendizaje() {
   const dominios = await getDomains();
 

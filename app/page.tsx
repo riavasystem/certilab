@@ -5,6 +5,8 @@ import { Play, Trophy, Clipboard } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/lib/actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Dashboard() {
   const stats = await getDashboardStats();
   const percentage = stats.totalQuestions > 0
