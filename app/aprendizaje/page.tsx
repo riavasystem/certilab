@@ -18,19 +18,19 @@ async function AprendizajeContent() {
 
       <div className="grid gap-6">
         {dominios.map((dominio) => (
-          <Link key={dominio.id} href={`/aprendizaje/${dominio.id}`} className="block">
-            <Card className="hover:border-primary/50 cursor-pointer transition-colors">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5 text-primary" />
-                    {dominio.name}
-                  </CardTitle>
-                  <Badge variant="outline">Peso: {dominio.weight}%</Badge>
-                </div>
-                <CardDescription>Objetivos oficiales del examen AWS AIF-C01</CardDescription>
-              </CardHeader>
-              <CardContent>
+          <Card key={dominio.id} className="hover:border-primary/50 transition-colors">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5 text-primary" />
+                  {dominio.name}
+                </CardTitle>
+                <Badge variant="outline">Peso: {dominio.weight}%</Badge>
+              </div>
+              <CardDescription>Objetivos oficiales del examen AWS AIF-C01</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Progreso del dominio</span>
@@ -38,9 +38,12 @@ async function AprendizajeContent() {
                   </div>
                   <Progress value={0} className="h-2" />
                 </div>
-              </CardContent>
-            </Card>
-          </Link>
+                <Button asChild className="w-full">
+                  <Link href={`/aprendizaje/${dominio.id}`}>Comenzar</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
