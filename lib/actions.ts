@@ -3,10 +3,13 @@
 import { db } from "@/lib/db";
 import { domains, questions, examAttempts, questionAttempts } from "@/lib/db/schema";
 import { eq, sql, count } from "drizzle-orm";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function getDashboardStats() {
+  noStore();
   // Total preguntas respondidas (ejemplo simplificado)
   const totalAttempts = await db.select({ count: count() }).from(questionAttempts);
+
 
   // Total preguntas en BD
   const totalQuestions = await db.select({ count: count() }).from(questions);
@@ -18,10 +21,12 @@ export async function getDashboardStats() {
 }
 
 export async function getDomains() {
+  noStore();
   return await db.select().from(domains);
 }
 
 export async function getExamAttempts() {
+  noStore();
   return await db.select().from(examAttempts).orderBy(sql`${examAttempts.startTime} DESC`);
 }
 

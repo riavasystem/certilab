@@ -4,8 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { ClipboardCheck, Target, Timer } from "lucide-react";
 import { getExamAttempts } from "@/lib/actions";
 
-export const dynamic = 'force-dynamic';
-
 export default async function Examen() {
   const attempts = await getExamAttempts();
 
