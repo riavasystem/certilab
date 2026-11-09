@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import { getDomainById, getLessonsByDomain } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default async function DominioDetalle({ params }: { params: { id: string } }) {
+async function DominioDetalleContent({ params }: { params: { id: string } }) {
   const domainId = parseInt(params.id);
   const dominio = await getDomainById(domainId);
   const lecciones = await getLessonsByDomain(domainId);
@@ -27,5 +28,13 @@ export default async function DominioDetalle({ params }: { params: { id: string 
         ))
       )}
     </div>
+  );
+}
+
+export default function DominioDetalle({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<div>Cargando contenido...</div>}>
+      <DominioDetalleContent params={params} />
+    </Suspense>
   );
 }
