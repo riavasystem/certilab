@@ -76,16 +76,30 @@ async function seedQuestions() {
     {
         domainId,
         type: "single",
-        questionText: "An airline requires millisecond-latency predictions for personalized seat upgrade offers as customers browse the website. Which inferencing approach is appropriate?",
-        options: ["Real-time inferencing", "Batch inferencing", "Training inferencing", "Offline inferencing"],
-        correctAnswer: "Real-time inferencing",
-        explanation: "This approach is designed to serve predictions for single incoming requests with millisecond-scale latency.",
+        questionText: "What is the primary objective of a clustering algorithm?",
+        options: ["Predict a continuous value", "Group similar data points together", "Classify data into known categories", "Maximize reward in an environment"],
+        correctAnswer: "Group similar data points together",
+        explanation: "Clustering is an unsupervised learning technique that groups similar data points.",
         distractorExplanations: {
-          "Batch inferencing": "Processes large groups of records together on a schedule.",
-          "Training inferencing": "Training is a separate phase that happens before inferencing.",
-          "Offline inferencing": "Introduces delay that does not meet a millisecond response requirement."
+          "Predict a continuous value": "This is regression.",
+          "Classify data into known categories": "This is classification.",
+          "Maximize reward in an environment": "This is reinforcement learning."
         },
         difficulty: "intermediate"
+    },
+    {
+        domainId,
+        type: "single",
+        questionText: "Which type of learning involves an agent learning by trial and error?",
+        options: ["Supervised", "Unsupervised", "Reinforcement", "Clustering"],
+        correctAnswer: "Reinforcement",
+        explanation: "Reinforcement learning is based on an agent interacting with an environment to maximize rewards.",
+        distractorExplanations: {
+          "Supervised": "Learns from labeled data.",
+          "Unsupervised": "Learns patterns from unlabeled data.",
+          "Clustering": "A type of unsupervised learning."
+        },
+        difficulty: "basic"
     }
   ];
 

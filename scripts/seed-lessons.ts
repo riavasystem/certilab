@@ -24,9 +24,15 @@ async function seedLessons() {
     },
     {
       domainId,
-      title: "Supervised Learning",
-      content: "# Supervised Learning\n\nModel learns from labeled data...",
-      order: 2
+      title: "Unsupervised Learning",
+      content: "# Unsupervised Learning\n\nModel learns patterns from unlabeled data (clustering, dimensionality reduction)...",
+      order: 3
+    },
+    {
+      domainId,
+      title: "Reinforcement Learning",
+      content: "# Reinforcement Learning\n\nAgent learns by interacting with an environment...",
+      order: 4
     }
   ];
 
