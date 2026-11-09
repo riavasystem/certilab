@@ -1,4 +1,4 @@
-import { LayoutDashboard, GraduationCap, ClipboardList } from "lucide-react";
+import { LayoutDashboard, GraduationCap, Clipboard } from "lucide-react";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -17,7 +17,7 @@ export default function Sidebar() {
           <span>Aprendizaje</span>
         </Link>
         <Link href="/examen" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent group">
-          <ClipboardList className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
+          <Clipboard className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
           <span>Examen</span>
         </Link>
       </nav>

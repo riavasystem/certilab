@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Trophy } from "lucide-react";
+import { Play, BookOpen, Trophy, Clipboard } from "lucide-react";
 import Link from "next/link";
 
 export default function Dashboard() {
@@ -72,7 +72,7 @@ export default function Dashboard() {
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-primary/10 rounded-full">
-                <ClipboardList className="h-6 w-6 text-primary" />
+                <Clipboard className="h-6 w-6 text-primary" />
               </div>
               <div className="flex-1">
                 <p className="text-sm font-medium">Simulacro de Examen</p>
