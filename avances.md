@@ -11,7 +11,7 @@ Tecnologías: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Neon PostgreSQL, 
 | 2. Fundamentos de GenAI | ✅ Completado |
 | 3. Aplicaciones de Foundation Models | ✅ Completado |
 | 4. Guidelines for Responsible AI | ✅ Completado |
-| 5. Seguridad, Compliance y Governance | ⏳ Pendiente |
+| 5. Seguridad, Compliance y Governance | ✅ Completado |
 
 ## Última Actualización (2026-11-09)
 - Corrección de errores de *prerendering* en páginas dinámicas mediante `Suspense`.
