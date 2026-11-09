@@ -18,7 +18,7 @@ async function AprendizajeContent() {
 
       <div className="grid gap-6">
         {dominios.map((dominio) => (
-          <Link key={dominio.id} href={`/aprendizaje/${dominio.id}`}>
+          <Link key={dominio.id} href={`/aprendizaje/${dominio.id}`} className="block">
             <Card className="hover:border-primary/50 cursor-pointer transition-colors">
               <CardHeader>
                 <div className="flex items-center justify-between">
