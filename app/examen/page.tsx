@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ClipboardCheck, Target, Timer } from "lucide-react";
-import { getExamAttempts } from "@/lib/actions";
+import { getExamAttempts, createExamAttempt } from "@/lib/actions";
 
 async function ExamenContent() {
   const attempts = await getExamAttempts();
@@ -34,7 +34,9 @@ async function ExamenContent() {
               <li>Distribución proporcional por dominio.</li>
               <li>Resultados detallados al finalizar.</li>
             </ul>
-            <Button className="w-full mt-4" size="lg">Iniciar Simulacro</Button>
+            <form action={createExamAttempt.bind(null, 'simulacro')}>
+              <Button type="submit" className="w-full mt-4" size="lg">Iniciar Simulacro</Button>
+            </form>
           </CardContent>
         </Card>
 

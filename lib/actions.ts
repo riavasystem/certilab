@@ -4,8 +4,18 @@ import { db } from "@/lib/db";
 import { domains, questions, examAttempts, questionAttempts } from "@/lib/db/schema";
 import { eq, sql, count } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
+import { redirect } from "next/navigation";
 
-export async function getDashboardStats() {
+export async function createExamAttempt(mode: string) {
+  noStore();
+  const [attempt] = await db.insert(examAttempts).values({
+    mode,
+    status: 'in-progress',
+  }).returning();
+
+  redirect(`/examen/${attempt.id}`);
+}
+
   noStore();
   // Total preguntas respondidas (ejemplo simplificado)
   const totalAttempts = await db.select({ count: count() }).from(questionAttempts);
@@ -25,8 +35,21 @@ export async function getDomains() {
   return await db.select().from(domains);
 }
 
-export async function getExamAttempts() {
+export async function getDomainById(id: number) {
   noStore();
-  return await db.select().from(examAttempts).orderBy(sql`${examAttempts.startTime} DESC`);
+  const res = await db.select().from(domains).where(eq(domains.id, id));
+  return res[0];
 }
+
+export async function getLessonsByDomain(domainId: number) {
+  noStore();
+  return await db.select().from(lessons).where(eq(lessons.domainId, domainId));
+}
+
+export async function getExamAttempt(id: number) {
+  noStore();
+  const res = await db.select().from(examAttempts).where(eq(examAttempts.id, id));
+  return res[0];
+}
+
 
