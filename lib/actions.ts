@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { domains, questions, examAttempts, questionAttempts } from "@/lib/db/schema";
+import { domains, questions, examAttempts, questionAttempts, lessons } from "@/lib/db/schema";
 import { eq, sql, count } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
@@ -16,10 +16,10 @@ export async function createExamAttempt(mode: string) {
   redirect(`/examen/${attempt.id}`);
 }
 
+export async function getDashboardStats() {
   noStore();
   // Total preguntas respondidas (ejemplo simplificado)
   const totalAttempts = await db.select({ count: count() }).from(questionAttempts);
-
 
   // Total preguntas en BD
   const totalQuestions = await db.select({ count: count() }).from(questions);
@@ -52,4 +52,7 @@ export async function getExamAttempt(id: number) {
   return res[0];
 }
 
-
+export async function getExamAttempts() {
+  noStore();
+  return await db.select().from(examAttempts).orderBy(sql`${examAttempts.startTime} DESC`);
+}
