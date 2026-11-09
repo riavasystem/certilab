@@ -2,16 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap } from "lucide-react";
+import { getDomains } from "@/lib/actions";
 
-const DOMINIOS = [
-  { id: 1, name: "Fundamentos de IA y ML", weight: 20, progress: 40 },
-  { id: 2, name: "Fundamentos de IA generativa", weight: 24, progress: 10 },
-  { id: 3, name: "Aplicaciones de modelos fundacionales", weight: 28, progress: 0 },
-  { id: 4, name: "Directrices de IA responsable", weight: 14, progress: 0 },
-  { id: 5, name: "Seguridad, cumplimiento y gobernanza de IA", weight: 14, progress: 0 },
-];
+export default async function Aprendizaje() {
+  const dominios = await getDomains();
 
-export default function Aprendizaje() {
   return (
     <div className="space-y-8">
       <div>
@@ -20,13 +15,13 @@ export default function Aprendizaje() {
       </div>
 
       <div className="grid gap-6">
-        {DOMINIOS.map((dominio) => (
+        {dominios.map((dominio) => (
           <Card key={dominio.id} className="hover:border-primary/50 cursor-pointer transition-colors">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl flex items-center gap-2">
                   <GraduationCap className="h-5 w-5 text-primary" />
-                  Dominio {dominio.id}: {dominio.name}
+                  {dominio.name}
                 </CardTitle>
                 <Badge variant="outline">Peso: {dominio.weight}%</Badge>
               </div>
@@ -36,9 +31,9 @@ export default function Aprendizaje() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Progreso del dominio</span>
-                  <span>{dominio.progress}%</span>
+                  <span>0%</span>
                 </div>
-                <Progress value={dominio.progress} className="h-2" />
+                <Progress value={0} className="h-2" />
               </div>
             </CardContent>
           </Card>

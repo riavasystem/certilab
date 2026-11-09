@@ -1,10 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Trophy, Clipboard } from "lucide-react";
+import { Play, Trophy, Clipboard } from "lucide-react";
 import Link from "next/link";
+import { getDashboardStats } from "@/lib/actions";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const stats = await getDashboardStats();
+  const percentage = stats.totalQuestions > 0
+    ? Math.round((Number(stats.answeredQuestions) / Number(stats.totalQuestions)) * 100)
+    : 0;
+
   return (
     <div className="space-y-8">
       <div>
@@ -18,8 +24,8 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">Progreso General</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">15%</div>
-            <Progress value={15} className="mt-2" />
+            <div className="text-2xl font-bold">{percentage}%</div>
+            <Progress value={percentage} className="mt-2" />
           </CardContent>
         </Card>
         <Card>
@@ -27,7 +33,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">Preguntas Respondidas</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45 / 300</div>
+            <div className="text-2xl font-bold">{String(stats.answeredQuestions)} / {String(stats.totalQuestions)}</div>
           </CardContent>
         </Card>
         <Card>

@@ -2,8 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ClipboardCheck, Target, Timer } from "lucide-react";
+import { getExamAttempts } from "@/lib/actions";
 
-export default function Examen() {
+export default async function Examen() {
+  const attempts = await getExamAttempts();
+
   return (
     <div className="space-y-8">
       <div>
@@ -65,9 +68,20 @@ export default function Examen() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            Aún no has realizado ningún examen. ¡Empieza hoy mismo!
-          </div>
+          {attempts.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Aún no has realizado ningún examen. ¡Empieza hoy mismo!
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {attempts.map((attempt) => (
+                <div key={attempt.id} className="flex justify-between items-center p-3 border rounded-lg">
+                  <span>Intento #{attempt.id} - {attempt.mode}</span>
+                  <Badge>{attempt.status}</Badge>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
