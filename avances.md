@@ -8,7 +8,7 @@ Tecnologías: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Neon PostgreSQL, 
 | Dominio | Estado |
 | :--- | :--- |
 | 1. Fundamentos de IA y ML | ✅ Completado |
-| 2. Fundamentos de GenAI | ⏳ Pendiente |
+| 2. Fundamentos de GenAI | ✅ Completado |
 | 3. Aplicaciones de Foundation Models | ⏳ Pendiente |
 | 4. Guidelines for Responsible AI | ⏳ Pendiente |
 | 5. Seguridad, Compliance y Governance | ⏳ Pendiente |
