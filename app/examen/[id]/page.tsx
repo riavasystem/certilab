@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { getExamAttempt } from "@/lib/actions";
 import { notFound } from "next/navigation";
 
-async function ExamenActivoContent({ params }: { params: { id: string } }) {
-  const attempt = await getExamAttempt(parseInt(params.id));
+async function ExamenActivoContent({ id }: { id: string }) {
+  const attempt = await getExamAttempt(parseInt(id));
 
   if (!attempt) notFound();
 
@@ -18,10 +18,11 @@ async function ExamenActivoContent({ params }: { params: { id: string } }) {
   );
 }
 
-export default function ExamenActivo({ params }: { params: { id: string } }) {
+export default async function ExamenActivo({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
     <Suspense fallback={<div>Cargando examen...</div>}>
-      <ExamenActivoContent params={params} />
+      <ExamenActivoContent id={id} />
     </Suspense>
   );
 }
