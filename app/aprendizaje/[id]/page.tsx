@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-import { getDomainById, getLessonsByDomain } from "@/lib/actions";
+import { getDomainById, getLessonsByDomain, getLessonProgress } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MarkAsCompleteButton from "@/components/MarkAsCompleteButton";
 
 async function DominioDetalleContent({ id }: { id: string }) {
   const domainId = parseInt(id);
@@ -10,16 +11,24 @@ async function DominioDetalleContent({ id }: { id: string }) {
 
   if (!dominio) notFound();
 
+  const leccionesConProgreso = await Promise.all(
+    lecciones.map(async (leccion) => {
+      const progress = await getLessonProgress(leccion.id);
+      return { ...leccion, status: progress?.status || 'pending' };
+    })
+  );
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{dominio.name}</h1>
-      {lecciones.length === 0 ? (
+      {leccionesConProgreso.length === 0 ? (
         <p>No hay lecciones disponibles para este dominio.</p>
       ) : (
-        lecciones.map((leccion) => (
+        leccionesConProgreso.map((leccion) => (
           <Card key={leccion.id}>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle>{leccion.title}</CardTitle>
+              <MarkAsCompleteButton lessonId={leccion.id} initialStatus={leccion.status} />
             </CardHeader>
             <CardContent>
               <p>{leccion.content}</p>
