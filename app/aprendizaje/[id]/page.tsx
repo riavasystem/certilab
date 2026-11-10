@@ -31,7 +31,7 @@ async function DominioDetalleContent({ id }: { id: string }) {
               <MarkAsCompleteButton lessonId={leccion.id} initialStatus={leccion.status} />
             </CardHeader>
             <CardContent>
-              <p>{leccion.content}</p>
+              <p className="whitespace-pre-wrap">{leccion.content}</p>
             </CardContent>
           </Card>
         ))
