@@ -23,7 +23,7 @@ async function populateQuestionsToThirteen() {
       continue;
     }
 
-    const questionsToAdd = [];
+    const questionsToAdd: any[] = [];
     for (let i = 0; i < needed; i++) {
       questionsToAdd.push({
         domainId: domain.id,

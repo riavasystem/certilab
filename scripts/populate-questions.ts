@@ -11,7 +11,7 @@ async function populateMoreQuestions() {
   for (const domain of domainsList) {
     console.log(`\nProcessing domain: ${domain.name}`);
 
-    let questionsToAdd = [];
+    let questionsToAdd: any[] = [];
 
     if (domain.name === "Fundamentals of AI and ML") {
       questionsToAdd = [
