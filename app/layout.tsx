@@ -27,8 +27,13 @@ export default function RootLayout({
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
       <body className="flex h-full">
         <Sidebar />
-        <main className="flex-1 ml-64 p-8 bg-background overflow-auto">
-          {children}
+        <main className="flex-1 ml-64 p-8 bg-background overflow-auto flex flex-col">
+          <div className="flex-1">{children}</div>
+          <footer className="mt-8 pt-6 border-t text-center text-sm text-muted-foreground">
+            <p>
+              Preguntas elaboradas originalmente basadas en los objetivos oficiales del examen AIF-C01 y documentación de AWS.
+            </p>
+          </footer>
         </main>
       </body>
     </html>
