@@ -45,6 +45,14 @@ export const examAttempts = pgTable("exam_attempts", {
   endTime: timestamp("end_time"),
 });
 
+// Preguntas asignadas a cada intento, en orden fijo, para poder reanudar
+export const examAttemptQuestions = pgTable("exam_attempt_questions", {
+  id: serial("id").primaryKey(),
+  attemptId: integer("attempt_id").references(() => examAttempts.id).notNull(),
+  questionId: integer("question_id").references(() => questions.id).notNull(),
+  order: integer("order").notNull(),
+});
+
 export const questionAttempts = pgTable("question_attempts", {
   id: serial("id").primaryKey(),
   attemptId: integer("attempt_id").references(() => examAttempts.id),

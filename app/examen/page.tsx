@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ClipboardCheck, Target, Timer } from "lucide-react";
 import { getExamAttempts, createExamAttempt } from "@/lib/actions";
+import Link from "next/link";
 
 async function ExamenContent() {
   const attempts = await getExamAttempts();
@@ -80,7 +81,21 @@ async function ExamenContent() {
               {attempts.map((attempt) => (
                 <div key={attempt.id} className="flex justify-between items-center p-3 border rounded-lg">
                   <span>Intento #{attempt.id} - {attempt.mode}</span>
-                  <Badge>{attempt.status}</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={attempt.status === 'completed' ? 'default' : 'secondary'}>
+                      {attempt.status === 'completed' ? 'Completado' : 'En curso'}
+                    </Badge>
+                    {attempt.status === 'in-progress' && (
+                      <Button asChild size="sm">
+                        <Link href={`/examen/${attempt.id}`}>Reanudar</Link>
+                      </Button>
+                    )}
+                    {attempt.status === 'completed' && (
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/examen/${attempt.id}/resultado`}>Ver resultado</Link>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

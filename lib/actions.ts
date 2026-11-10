@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { domains, questions, examAttempts, questionAttempts, lessons, learningProgress } from "@/lib/db/schema";
-import { eq, count, and, inArray, sql as drizzleSql } from "drizzle-orm";
+import { domains, questions, examAttempts, examAttemptQuestions, questionAttempts, lessons, learningProgress } from "@/lib/db/schema";
+import { eq, count, and, inArray, asc, sql as drizzleSql } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -82,35 +82,60 @@ export async function getQuestionsForExam(attemptId: number) {
   const attempt = await getExamAttempt(attemptId);
   if (!attempt) return [];
 
+  // Si el intento ya tiene preguntas asignadas, devolverlas en el mismo orden
+  const assigned = await db.select()
+    .from(examAttemptQuestions)
+    .where(eq(examAttemptQuestions.attemptId, attemptId))
+    .orderBy(asc(examAttemptQuestions.order));
+
+  if (assigned.length > 0) {
+    const ids = assigned.map(a => a.questionId);
+    const qs = await db.select().from(questions).where(inArray(questions.id, ids));
+    return ids.map(id => qs.find(q => q.id === id)).filter((q): q is NonNullable<typeof q> => !!q);
+  }
+
+  // Primera vez: seleccionar y persistir el orden para poder reanudar
+  let selectedQuestions: (typeof questions.$inferSelect)[] = [];
+
   if (attempt.mode === 'simulacro') {
     const weights = [
-      { id: 1, percent: 0.20, count: 13 },
-      { id: 2, percent: 0.24, count: 16 },
-      { id: 3, percent: 0.28, count: 18 },
-      { id: 4, percent: 0.14, count: 9 },
-      { id: 5, percent: 0.14, count: 9 },
+      { id: 1, count: 13 },
+      { id: 2, count: 16 },
+      { id: 3, count: 18 },
+      { id: 4, count: 9 },
+      { id: 5, count: 9 },
     ];
 
-    let selectedQuestions: typeof questions.$inferSelect[] = [];
-    let usedIds = new Set<number>();
-
     for (const w of weights) {
-      // Get more than needed to ensure uniqueness if necessary,
-      // though database size is currently 13/domain.
-      // With current data, we must take all.
       const q = await db.select()
         .from(questions)
         .where(eq(questions.domainId, w.id))
         .orderBy(drizzleSql`RANDOM()`)
         .limit(w.count);
-
       selectedQuestions = [...selectedQuestions, ...q];
-      q.forEach(quest => usedIds.add(quest.id));
     }
-    return selectedQuestions;
+  } else {
+    selectedQuestions = await db.select().from(questions).orderBy(drizzleSql`RANDOM()`).limit(10);
   }
 
-  return await db.select().from(questions).orderBy(drizzleSql`RANDOM()`).limit(10);
+  if (selectedQuestions.length > 0) {
+    await db.insert(examAttemptQuestions).values(
+      selectedQuestions.map((q, index) => ({
+        attemptId,
+        questionId: q.id,
+        order: index,
+      }))
+    );
+  }
+
+  return selectedQuestions;
+}
+
+export async function getSavedAnswers(attemptId: number) {
+  noStore();
+  const attempts = await db.select().from(questionAttempts)
+    .where(eq(questionAttempts.attemptId, attemptId));
+  return attempts.map(a => ({ questionId: a.questionId, userAnswer: a.userAnswer }));
 }
 
 export async function submitAnswer(attemptId: number, questionId: number, answer: any) {
