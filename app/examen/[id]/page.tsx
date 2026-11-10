@@ -4,7 +4,7 @@ import ExamenActivoClient from "@/components/ExamenActivoClient";
 import { getExamAttempt } from "@/lib/actions";
 
 // Tell Next.js this is a dynamic route that cannot be prerendered at build time
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 async function ExamenActivoLoader({ id }: { id: string }) {
   const attempt = await getExamAttempt(parseInt(id));

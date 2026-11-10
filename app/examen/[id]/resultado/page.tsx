@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // Ensure this page is dynamic to prevent prerendering errors
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 async function ResultadoContent({ id }: { id: string }) {
   const result = await getExamResults(parseInt(id));
