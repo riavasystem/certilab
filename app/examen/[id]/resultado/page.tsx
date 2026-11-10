@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+// Ensure this page is dynamic to prevent prerendering errors
+export const dynamic = "force-dynamic";
+
 async function ResultadoContent({ id }: { id: string }) {
   const result = await getExamResults(parseInt(id));
   if (!result.attempt) notFound();
