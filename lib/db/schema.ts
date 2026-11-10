@@ -40,6 +40,7 @@ export const examAttempts = pgTable("exam_attempts", {
   certificationId: integer("certification_id").references(() => certifications.id),
   mode: text("mode").notNull(), // 'learning', 'evaluation', 'simulacro'
   status: text("status").notNull(), // 'in-progress', 'completed'
+  selectedDomains: jsonb("selected_domains"), // Array of domain IDs
   score: integer("score"),
   startTime: timestamp("start_time").defaultNow(),
   endTime: timestamp("end_time"),

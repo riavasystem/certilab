@@ -6,11 +6,19 @@ import { eq, count, and, inArray, asc, sql as drizzleSql } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function createExamAttempt(mode: string) {
+export async function createExamAttempt(mode: string, formData?: FormData) {
   noStore();
+
+  let selectedDomains: number[] | null = null;
+  if (formData) {
+    const domainIds = formData.getAll('domains');
+    selectedDomains = domainIds.map(id => parseInt(id as string));
+  }
+
   const [attempt] = await db.insert(examAttempts).values({
     mode,
     status: 'in-progress',
+    selectedDomains: selectedDomains as any, // Cast for JSONB
   }).returning();
 
   redirect(`/examen/${attempt.id}`);
@@ -94,7 +102,7 @@ export async function getQuestionsForExam(attemptId: number) {
     return ids.map(id => qs.find(q => q.id === id)).filter((q): q is NonNullable<typeof q> => !!q);
   }
 
-  // Primera vez: seleccionar y persistir el orden para poder reanudar
+  // Primera vez: seleccionar y persistir el orden
   let selectedQuestions: (typeof questions.$inferSelect)[] = [];
 
   if (attempt.mode === 'simulacro') {
@@ -115,7 +123,12 @@ export async function getQuestionsForExam(attemptId: number) {
       selectedQuestions = [...selectedQuestions, ...q];
     }
   } else {
-    selectedQuestions = await db.select().from(questions).orderBy(drizzleSql`RANDOM()`).limit(10);
+    // Modo práctica: filtrar por dominios si existen
+    const query = db.select().from(questions);
+    if (attempt.selectedDomains && Array.isArray(attempt.selectedDomains) && attempt.selectedDomains.length > 0) {
+      query.where(inArray(questions.domainId, attempt.selectedDomains as number[]));
+    }
+    selectedQuestions = await query.orderBy(drizzleSql`RANDOM()`).limit(10);
   }
 
   if (selectedQuestions.length > 0) {
@@ -144,7 +157,6 @@ export async function submitAnswer(attemptId: number, questionId: number, answer
   const q = (await db.select().from(questions).where(eq(questions.id, questionId)))[0];
   const isCorrect = JSON.stringify(answer) === JSON.stringify(q.correctAnswer);
 
-  // Check if answer already exists for this question in this attempt
   const existing = await db.select().from(questionAttempts)
     .where(and(eq(questionAttempts.attemptId, attemptId), eq(questionAttempts.questionId, questionId)));
 

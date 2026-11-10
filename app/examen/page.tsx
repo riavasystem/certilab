@@ -59,7 +59,9 @@ async function ExamenContent() {
               <li>Modo Aprendizaje: explicación inmediata.</li>
               <li>Sin límite de tiempo.</li>
             </ul>
-            <Button variant="outline" className="w-full mt-4" size="lg">Configurar Práctica</Button>
+            <Button asChild variant="outline" className="w-full mt-4" size="lg">
+              <Link href="/examen/configurar">Configurar Práctica</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
